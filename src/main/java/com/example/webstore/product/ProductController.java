@@ -41,6 +41,7 @@ public class ProductController {
     // 상품 개별 조회
     @GetMapping("/products/{id}")
     public ResponseEntity findProduct(@PathVariable("id") int id){
+        //Validator.isPositiveNumber(id);
         Product foundProduct = productService.findProduct(id);
         return new ResponseEntity<>(foundProduct, HttpStatus.OK);
     }
@@ -48,7 +49,7 @@ public class ProductController {
     // 상품 개별 삭제
     @DeleteMapping("/products/{id}")
     public ResponseEntity deleteProduct(@PathVariable("id") int id) {
-        Validator.isPositiveNumber(id);
+        //Validator.isPositiveNumber(id);
         productService.deleteProduct(id);
         return new ResponseEntity<>(success("delete success"),HttpStatus.OK);
     }

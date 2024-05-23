@@ -16,7 +16,7 @@ import static com.example.webstore.utils.ApiUtils.error;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler //(MethodArgumentNotValidException.class) 매개변수랑 같으니까 빼도됨
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiUtils.ApiResult handleValidationExceptions(MethodArgumentNotValidException errors) {
 
@@ -28,16 +28,22 @@ public class GlobalExceptionHandler {
         }
         return error(errorMessages, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler()
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiUtils.ApiResult handleNotFoundProductExceptions(NoSuchElementException error) {
         return error(error.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiUtils.ApiResult handleIllegalArgumentException(IllegalArgumentException error) {
         return error(error.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiUtils.ApiResult handleDuplicateException(DuplicateException error) {
+        return error(error.getMessage(), HttpStatus.CONFLICT);
     }
 
 
