@@ -16,7 +16,8 @@ public class MemberService {
     MemberRepository memberRepository;
 
 
-    public String signUp(Member requestMember) {
+    public String signUp(SignUpDTO signUpDto) {
+        Member requestMember = signUpDto.convertToEntity();
         memberRepository.save(requestMember);
         return memberRepository.findByUserId(requestMember.getUserId()).getUserId();
     }

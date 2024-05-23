@@ -22,9 +22,7 @@ public class MemberController {
     public ResponseEntity<ApiUtils.ApiResult> signUp(@Valid @RequestBody SignUpDTO signUpDto) {
         // ID 중복 체크
         isDuplicateId(signUpDto);
-
-        Member requestMember = signUpDto.convertToEntity();
-        String savedMember = memberService.signUp(requestMember);
+        String savedMember = memberService.signUp(signUpDto);
         return new ResponseEntity(success(savedMember), HttpStatus.CREATED);
     }
 
