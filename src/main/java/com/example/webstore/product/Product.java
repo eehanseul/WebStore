@@ -22,6 +22,9 @@ public class Product {
         this.description = description;
         this.categoryId = categoryId;
     }
+    public ProductDTO convertToDto() {
+        return new ProductDTO(name,price,description,categoryId);
+    }
 }
 
 

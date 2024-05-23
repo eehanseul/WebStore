@@ -1,9 +1,12 @@
 package com.example.webstore.product;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
 public class ProductDTO {
     @NotBlank(message="상품명을 입력하세요")
     private String name;

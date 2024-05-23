@@ -1,6 +1,7 @@
 package com.example.webstore.exception;
 
 import com.example.webstore.utils.ApiUtils;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,9 +30,9 @@ public class GlobalExceptionHandler {
         return error(errorMessages, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiUtils.ApiResult handleNotFoundProductExceptions(NoSuchElementException error) {
-        return error(error.getMessage(), HttpStatus.BAD_REQUEST);
+        return error(error.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
@@ -46,5 +47,10 @@ public class GlobalExceptionHandler {
         return error(error.getMessage(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiUtils.ApiResult handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException error) {
+        return error(error.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
 }

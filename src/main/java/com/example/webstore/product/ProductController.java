@@ -1,5 +1,6 @@
 package com.example.webstore.product;
 
+import com.example.webstore.member.SignUpDTO;
 import com.example.webstore.utils.Validator;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,8 @@ public class ProductController {
     // 상품 개별 등록
     @PostMapping("/products")
     public ResponseEntity registerProduct(@Valid @RequestBody ProductDTO productDto) {
-        Product requestProduct = productDto.convertToEntity();
-        String savedProduct = productService.registerProduct(requestProduct);
+        isDuplicateProduct(productDto);
+        String savedProduct = productService.registerProduct(productDto);
         return new ResponseEntity(success(savedProduct), HttpStatus.CREATED);
     }
 
@@ -34,16 +35,16 @@ public class ProductController {
             @RequestParam(value = "limit",defaultValue = ""+Integer.MAX_VALUE) int limit,
             @RequestParam(value = "currentPage", defaultValue="1") int currentPage
     ) {
-        List<Product> foundProducts = productService.findProducts(limit, currentPage);
-        return new ResponseEntity<>(foundProducts, HttpStatus.OK);
+        List<ProductDTO> foundProducts = productService.findProducts(limit, currentPage);
+        return new ResponseEntity<>(success(foundProducts), HttpStatus.OK);
     }
 
     // 상품 개별 조회
     @GetMapping("/products/{id}")
     public ResponseEntity findProduct(@PathVariable("id") int id){
         //Validator.isPositiveNumber(id);
-        Product foundProduct = productService.findProduct(id);
-        return new ResponseEntity<>(foundProduct, HttpStatus.OK);
+        ProductDTO foundProduct = productService.findProduct(id);
+        return new ResponseEntity<>(success(foundProduct), HttpStatus.OK);
     }
 
     // 상품 개별 삭제
@@ -52,6 +53,10 @@ public class ProductController {
         //Validator.isPositiveNumber(id);
         productService.deleteProduct(id);
         return new ResponseEntity<>(success("delete success"),HttpStatus.OK);
+    }
+
+    private void isDuplicateProduct(ProductDTO productDto) {
+        productService.checkDuplicateProduct(productDto.getName());
     }
 
 }
