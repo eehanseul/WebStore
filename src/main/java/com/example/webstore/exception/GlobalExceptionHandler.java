@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static com.example.webstore.utils.ApiUtils.error;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler //(MethodArgumentNotValidException.class) 매개변수랑 같으니까 빼도됨
-    @ResponseStatus(HttpStatus.BAD_REQUEST) // 400에러
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiUtils.ApiResult handleValidationExceptions(MethodArgumentNotValidException errors) {
 
         Map<String, String> errorMessages = new HashMap<>();
@@ -25,7 +26,19 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage(); // 예외 메세지
             errorMessages.put(errorField,errorMessage);
         }
-        //log.info("errorMessage = {}",errorMessages.toString());
         return error(errorMessages, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler()
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiUtils.ApiResult handleNotFoundProductExceptions(NoSuchElementException error) {
+        return error(error.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiUtils.ApiResult handleIllegalArgumentException(IllegalArgumentException error) {
+        return error(error.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+
 }
