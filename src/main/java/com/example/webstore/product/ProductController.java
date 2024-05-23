@@ -19,6 +19,7 @@ public class ProductController {
 
     private ProductService productService;
 
+    // TODO 상품 여러 개 삭제, 카테고리 조회
     // 상품 개별 등록
     @PostMapping("/products")
     public ResponseEntity registerProduct(@Valid @RequestBody ProductDTO productDto) {
